@@ -1,5 +1,3 @@
-import { validateConfig } from './validators/validateConfig.js';
-
 createAuth({
 
     database: {
@@ -26,6 +24,25 @@ createAuth({
             requireNumber: true,
             requireSpecial: true
         }
+    },
+
+    email: {
+
+     provider: nodemailer,
+
+     options: {
+
+        host,
+
+        port,
+
+        secure
+
+       }
+
     }
 
 });
+
+
+export default createAuth;
