@@ -1,35 +1,53 @@
 {
-  "name": "krptonox-auth",
+  "name": "@krptonox/auth",
   "version": "0.1.0",
   "description": "Authentication framework for Express using IronPass.",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
+  "type": "module",
+
+  "main": "./src/index.js",
+
+  "exports": {
+    ".": "./src/index.js"
   },
+
   "files": [
     "src"
   ],
+
   "scripts": {
     "test": "vitest run",
     "lint": "eslint ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/krptonox/krptonox-auth.git"
-  },
-   "keywords": [
+
+  "keywords": [
     "authentication",
     "express",
     "jwt",
     "ironpass"
   ],
+
   "author": "Aryan",
   "license": "MIT",
-  "type":  "module",
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krptonox/krptonox-auth.git"
+  },
+
   "bugs": {
     "url": "https://github.com/krptonox/krptonox-auth/issues"
   },
+
   "homepage": "https://github.com/krptonox/krptonox-auth#readme",
+
+  "publishConfig": {
+    "access": "public"
+  },
+
+  "engines": {
+    "node": ">=20"
+  },
+
   "dependencies": {
     "express": "^5.2.1",
     "ironpass": "^0.2.0",
