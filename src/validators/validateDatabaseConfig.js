@@ -3,10 +3,6 @@ export function validateDatabaseConfig(databaseConfig) {
         throw new ConfigurationError("Database configuration is required");
     }
 
-    if (!databaseConfig.type) {
-        throw new ConfigurationError("Database type is required");
-    }
-
     if (!databaseConfig.provider) {
         throw new ConfigurationError("Database provider is required");
     }
@@ -14,5 +10,7 @@ export function validateDatabaseConfig(databaseConfig) {
     if (!databaseConfig.userModel) {
         throw new ConfigurationError("Database user model is required");
     }
+
+    return databaseConfig;
 
 }
