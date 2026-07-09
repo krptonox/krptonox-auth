@@ -5,15 +5,16 @@ import { mergePolicyDefaults } from './mergePolicyDefaults.js';
 import ConfigurationError from '../../errors/ConfigurationError.js';
 
 export default function mergeDefaults(config) {
-    if(!config) {
-        throw new ConfigurationError("Configuration object is required");
+    if (!config) {
+        throw new ConfigurationError(
+            "Configuration object is required"
+        );
     }
 
-    const newConfig = structuredClone(config);
+    const mergedConfig = structuredClone(config);
 
-    let mergedConfig = mergeTokenDefaults(newConfig);
-
-    mergedConfig = mergePolicyDefaults(mergedConfig);
+    mergeTokenDefaults(mergedConfig);
+    mergePolicyDefaults(mergedConfig);
 
     return mergedConfig;
 }

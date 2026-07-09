@@ -1,45 +1,48 @@
 import ConfigurationError from '../errors/ConfigurationError.js';
 
-import { DEFAULT_PASSWORD_MIN_LENGTH, DEFAULT_PASSWORD_MAX_LENGTH, DEFAULT_REQUIRE_LOWERCASE, DEFAULT_REQUIRE_NUMBER, DEFAULT_REQUIRE_SPECIAL, DEFAULT_REQUIRE_UPPERCASE } from '../../constants/policy.js';
+import {
+    DEFAULT_PASSWORD_MIN_LENGTH,
+    DEFAULT_PASSWORD_MAX_LENGTH,
+    DEFAULT_REQUIRE_LOWERCASE,
+    DEFAULT_REQUIRE_NUMBER,
+    DEFAULT_REQUIRE_SPECIAL,
+    DEFAULT_REQUIRE_UPPERCASE,
+} from "../../constants/policy.js";
 
 export default function mergePolicyDefaults(config) {
-    if(!config){
-        throw new ConfigurationError("Configuration object is required");
+    if (!config.policy?.password) {
+        return config;
     }
 
-    const newConfig = structuredClone(config);
+    const passwordPolicy = config.policy.password;
 
-    if (!newConfig.policy?.password){
-    return newConfig;
-    }
-
-    newConfig.policy.password = {
-        ...newConfig.policy.password,
+    config.policy.password = {
+        ...passwordPolicy,
 
         minLength:
-            newConfig.policy.password.minLength ??
+            passwordPolicy.minLength ??
             DEFAULT_PASSWORD_MIN_LENGTH,
 
         maxLength:
-            newConfig.policy.password.maxLength ??
+            passwordPolicy.maxLength ??
             DEFAULT_PASSWORD_MAX_LENGTH,
 
         requireUppercase:
-            newConfig.policy.password.requireUppercase ??
+            passwordPolicy.requireUppercase ??
             DEFAULT_REQUIRE_UPPERCASE,
 
         requireLowercase:
-            newConfig.policy.password.requireLowercase ??
+            passwordPolicy.requireLowercase ??
             DEFAULT_REQUIRE_LOWERCASE,
 
         requireNumber:
-            newConfig.policy.password.requireNumber ??
+            passwordPolicy.requireNumber ??
             DEFAULT_REQUIRE_NUMBER,
 
         requireSpecial:
-            newConfig.policy.password.requireSpecial ??
+            passwordPolicy.requireSpecial ??
             DEFAULT_REQUIRE_SPECIAL,
-       };
+    };
 
-    return newConfig;
+    return config;
 }

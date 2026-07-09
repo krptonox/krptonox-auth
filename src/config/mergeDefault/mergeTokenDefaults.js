@@ -1,28 +1,26 @@
 import ConfigurationError from '../../errors/ConfigurationError.js';
 
-import { DEFAULT_ACCESS_TOKEN_EXPIRY, DEFAULT_REFRESH_TOKEN_EXPIRY } from '../../constants/auth.js';
+import {
+    DEFAULT_ACCESS_TOKEN_EXPIRY,
+    DEFAULT_REFRESH_TOKEN_EXPIRY,
+} from "../../constants/auth.js";
 
 export default function mergeTokenDefaults(config) {
-    if (!config) {
-        throw new ConfigurationError("Configuration object is required");
-    }
+    config.token ??= {};
 
-    const newConfig = structuredClone(config);
+    const tokenPolicy = config.token;
 
-    // Ensure nested objects exist
-    newConfig.token ??= {};
+    config.token = {
+        ...tokenPolicy,
 
-    // Merge defaults
-    newConfig.token = {
-        ...newConfig.token,
         accessExpiry:
-            newConfig.token.accessExpiry ??
+            tokenPolicy.accessExpiry ??
             DEFAULT_ACCESS_TOKEN_EXPIRY,
 
         refreshExpiry:
-            newConfig.token.refreshExpiry ??
+            tokenPolicy.refreshExpiry ??
             DEFAULT_REFRESH_TOKEN_EXPIRY,
     };
 
-    return newConfig;
+    return config;
 }
