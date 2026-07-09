@@ -11,10 +11,10 @@ export default function mergeDefaults(config) {
         );
     }
 
-    const mergedConfig = structuredClone(config);
+    let resolvedConfig = structuredClone(config);
 
-    mergeTokenDefaults(mergedConfig);
-    mergePolicyDefaults(mergedConfig);
+    resolvedConfig = mergeTokenDefaults(resolvedConfig);
+    resolvedConfig = mergePolicyDefaults(resolvedConfig);
 
-    return mergedConfig;
+    return resolvedConfig;
 }

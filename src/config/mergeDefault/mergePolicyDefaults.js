@@ -1,5 +1,3 @@
-import ConfigurationError from '../errors/ConfigurationError.js';
-
 import {
     DEFAULT_PASSWORD_MIN_LENGTH,
     DEFAULT_PASSWORD_MAX_LENGTH,

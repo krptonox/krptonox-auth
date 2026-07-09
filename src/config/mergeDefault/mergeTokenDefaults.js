@@ -1,24 +1,20 @@
-import ConfigurationError from '../../errors/ConfigurationError.js';
-
 import {
     DEFAULT_ACCESS_TOKEN_EXPIRY,
     DEFAULT_REFRESH_TOKEN_EXPIRY,
-} from "../../constants/auth.js";
+} from '../../constants/auth.js';
 
 export default function mergeTokenDefaults(config) {
-    config.token ??= {};
-
-    const tokenPolicy = config.token;
+    const tokenConfig = config.token;
 
     config.token = {
-        ...tokenPolicy,
+        ...tokenConfig,
 
         accessExpiry:
-            tokenPolicy.accessExpiry ??
+            tokenConfig.accessExpiry ??
             DEFAULT_ACCESS_TOKEN_EXPIRY,
 
         refreshExpiry:
-            tokenPolicy.refreshExpiry ??
+            tokenConfig.refreshExpiry ??
             DEFAULT_REFRESH_TOKEN_EXPIRY,
     };
 
