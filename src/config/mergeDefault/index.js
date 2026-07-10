@@ -2,6 +2,8 @@ import { mergeTokenDefaults } from './mergeTokenDefaults.js';
 
 import { mergePolicyDefaults } from './mergePolicyDefaults.js';
 
+import { mergeEmailDefaults } from './mergeEmaiDefaults.js'
+
 import ConfigurationError from '../../errors/ConfigurationError.js';
 
 export default function mergeDefaults(config) {

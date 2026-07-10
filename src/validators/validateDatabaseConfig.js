@@ -1,3 +1,5 @@
+import ConfigurationError from '../errors/ConfigurationError.js';
+
 export function validateDatabaseConfig(databaseConfig) {
     if (!databaseConfig) {
         throw new ConfigurationError("Database configuration is required");

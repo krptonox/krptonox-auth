@@ -26,21 +26,32 @@ createAuth({
         }
     },
 
-    email: {
+   email: {
 
-     provider: nodemailer,
+    provider: nodemailer,
 
-     options: {
+    options: {
 
         host,
-
         port,
+        secure,
 
-        secure
+        auth: {
+            user,
+            pass
+        }
 
-       }
+    },
+
+    from: {
+
+        name: "My Application",
+
+        email: "noreply@company.com"
 
     }
+
+  }
 
 });
 
