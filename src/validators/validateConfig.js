@@ -9,11 +9,11 @@ import { validateTokenConfig } from './validateTokenConfig.js';
 import { validatePolicyConfig } from './validatePolicyConfig.js';
 
 export function validateConfig(config) {
-    if (!config) {
+    if(!config){
         throw new ConfigurationError("Configuration is required");
     }
 
-     const {
+     const{
         database,
         password,
         token,
@@ -27,11 +27,11 @@ export function validateConfig(config) {
 
     validateTokenConfig(token);
 
-    if (policy) {
+    if(policy) {
     validatePolicyConfig(policy);
     }
 
-    if (email) {
+    if(email) {
     validateEmailConfig(email);
     }
 
