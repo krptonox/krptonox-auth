@@ -1,8 +1,6 @@
-import { mergeTokenDefaults } from './mergeTokenDefaults.js';
-
-import { mergePolicyDefaults } from './mergePolicyDefaults.js';
-
-import { mergeEmailDefaults } from './mergeEmaiDefaults.js'
+import mergeTokenDefaults from "./mergeTokenDefaults.js";
+import mergePolicyDefaults from "./mergePolicyDefaults.js";
+import mergeEmailDefaults from "./.mergeEmailDefaults.js";
 
 import ConfigurationError from '../../errors/ConfigurationError.js';
 
@@ -17,6 +15,9 @@ export default function mergeDefaults(config) {
 
     resolvedConfig = mergeTokenDefaults(resolvedConfig);
     resolvedConfig = mergePolicyDefaults(resolvedConfig);
+    resolvedConfig = mergeEmailDefaults(resolvedConfig);
+
+return resolvedConfig;
 
     return resolvedConfig;
 }

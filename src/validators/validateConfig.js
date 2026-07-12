@@ -8,6 +8,8 @@ import { validateTokenConfig } from './validateTokenConfig.js';
 
 import { validatePolicyConfig } from './validatePolicyConfig.js';
 
+import { validateEmailConfig } from "./validateEmailConfig.js";
+
 export function validateConfig(config) {
     if(!config){
         throw new ConfigurationError("Configuration is required");

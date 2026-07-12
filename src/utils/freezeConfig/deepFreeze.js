@@ -1,3 +1,5 @@
+import { isPlainObject } from "./isPlainObject.js";
+
 export function deepFreeze(obj) {
     if(Object.isFrozen(obj)){
         return obj;
