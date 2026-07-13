@@ -1,9 +1,10 @@
 import ValidationError from "../errors/ValidationError.js";
 
 const TOKEN_PROVIDER_CONTRACT = Object.freeze({
-         jsonWebToken: "jsonWebToken(payload, secret, options)",
-         
-   });
+    sign: "sign(payload, options)",
+    verify: "verify(token, options)",
+    decode: "decode(token)"
+});
 
 export function validateTokenProvider(tokenProvider) {
 
