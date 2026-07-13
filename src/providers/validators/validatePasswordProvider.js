@@ -1,17 +1,25 @@
 import ValidationError from "../errors/ValidationError.js";
 
-export function validatePasswordProvider(passwordProvider) {
-    
-    const REQUIRED_PASSWORD_METHODS = {
+const PASSWORD_PROVIDER_CONTRACT = {
          hash: "hash(password)",
          verify: "verify(password, hash)"
    };
 
-    if(passwordProvider === null || passwordProvider === undefined){
-        throw new ValidationError("Password provider is required");
-    }
+export function validatePasswordProvider(passwordProvider) {
+
+   if(
+    passwordProvider === null ||
+    (
+        typeof passwordProvider !== "object" &&
+        typeof passwordProvider !== "function"
+    )
+    ){
+        throw new ValidationError(
+           "Password provider must be an object."
+    );
+}
     
-    for(const [method, signature] of Object.entries(REQUIRED_PASSWORD_METHODS)){
+    for(const [method, signature] of Object.entries(PASSWORD_PROVIDER_CONTRACT)){
 
     if(typeof passwordProvider[method] !== "function"){
 
