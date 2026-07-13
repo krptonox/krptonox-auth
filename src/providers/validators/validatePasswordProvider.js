@@ -1,9 +1,9 @@
 import ValidationError from "../errors/ValidationError.js";
 
-const PASSWORD_PROVIDER_CONTRACT = {
+const PASSWORD_PROVIDER_CONTRACT = Object.freeze({
          hash: "hash(password)",
          verify: "verify(password, hash)"
-   };
+   });
 
 export function validatePasswordProvider(passwordProvider) {
 
