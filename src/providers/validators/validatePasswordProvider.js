@@ -1,16 +1,24 @@
 import ValidationError from "../errors/ValidationError.js";
 
 export function validatePasswordProvider(passwordProvider) {
-    if(!passwordProvider){
+    
+    const requiredMethods = {
+        hash: "hash(password)",
+        verify: "verify(password, hash)"
+    };
+
+    if(passwordProvider === null || passwordProvider === undefined){
         throw new ValidationError("Password provider is required");
     }
+    
+    for (const [method, signature] of Object.entries(requiredMethods)) {
 
-    if(typeof passwordProvider.hash !== "function"){
-        throw new ValidationError("Password provider must implement a hash(password) function.");
-    }
+    if(typeof passwordProvider[method] !== "function"){
 
-    if(typeof passwordProvider.verify !== "function"){
-        throw new ValidationError("Password provider must implement a verify(password, hash) function.");
+        throw new ValidationError(
+            `Password provider must implement ${signature}.`
+        );
+      }
     }
 
     return passwordProvider;
