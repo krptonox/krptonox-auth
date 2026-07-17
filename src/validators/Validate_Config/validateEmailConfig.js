@@ -1,6 +1,6 @@
-import ConfigurationError from "../errors/ConfigurationError.js";
+import ConfigurationError from "../../errors/ConfigurationError.js";
 
-export default function validateEmailConfig(emailConfig) {
+export  function validateEmailConfig(emailConfig) {
     if(!emailConfig.provider){
         throw new ConfigurationError(
             "Email provider is required."

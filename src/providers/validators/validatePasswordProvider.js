@@ -1,33 +1,33 @@
-import ValidationError from "../errors/ValidationError.js";
+import ValidationError from "../../errors/ValidationError.js";
 
-const PASSWORD_PROVIDER_CONTRACT = Object.freeze({
-         hash: "hash(password)",
-         verify: "verify(password, hash)"
-   });
+import {
+    PASSWORD_PROVIDER_CONTRACT
+} from "../contracts/password.contract.js";
 
-export function validatePasswordProvider(passwordProvider) {
+export function validatePasswordProvider(provider) {
 
-   if(
-    passwordProvider === null ||
-    (
-        typeof passwordProvider !== "object" &&
-        typeof passwordProvider !== "function"
-    )
-    ){
+    if (
+        provider === null ||
+        (
+            typeof provider !== "object" &&
+            typeof provider !== "function"
+        )
+    ) {
         throw new ValidationError(
-           "Password provider must be an object."
-    );
-}
-    
-    for(const [method, signature] of Object.entries(PASSWORD_PROVIDER_CONTRACT)){
-
-    if(typeof passwordProvider[method] !== "function"){
-
-        throw new ValidationError(
-            `Password provider must implement ${signature}.`
+            "Password provider must be an object or function."
         );
-      }
     }
 
-    return passwordProvider;
+    for (const [method, signature] of Object.entries(
+        PASSWORD_PROVIDER_CONTRACT
+    )) {
+
+        if (typeof provider[method] !== "function") {
+            throw new ValidationError(
+                `Password provider must implement ${signature}.`
+            );
+        }
+    }
+
+    return provider;
 }

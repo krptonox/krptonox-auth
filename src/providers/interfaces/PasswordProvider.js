@@ -1,14 +1,15 @@
-import { PasswordProvider } from '../validators/validatePasswordProvider.js';
+import { resolveConfig } from '../../config/resolveConfig.js';
 
-export function PasswordProvider() {
-    const ironpass = {
-        hash(){},
-        verify(){}
-    }
+import { validatePasswordProvider } from '../../validators/validatePasswordProvider.js';
 
-    const bcrypt = {
-       hash(){},
-       compare(){}
-    }
-    return { ironpass, bcrypt };
+export function PasswordProviderFactory(resolvedConfig){
+
+     const provider = resolvedConfig.password.provider;
+
+    validatePasswordProvider(provider);
+
+    return new PasswordAdapter(
+        provider,
+        resolvedConfig.password
+    );
 }

@@ -1,35 +1,32 @@
-import ValidationError from "../errors/ValidationError.js";
+import ValidationError from "../../errors/ValidationError.js";
 
-const DATABASE_PROVIDER_CONTRACT = Object.freeze({
-    findUser: "findUser(criteria)",
-    findUserById: "findUserById(id)",
-    createUser: "createUser(userData)",
-    updateUser: "updateUser(id, updates)"
-});
+import{
+    DATABASE_PROVIDER_CONTRACT
+} from "../contracts/database.contract.js";
 
-export function validateDatabaseProvider(databaseProvider){
+export function validateDatabaseProvider(provider) {
 
-   if(
-    databaseProvider === null ||
-    (
-        typeof databaseProvider !== "object" &&
-        typeof databaseProvider !== "function"
-    )
+    if(
+        provider === null ||
+        (
+            typeof provider !== "object" &&
+            typeof provider !== "function"
+        )
     ){
         throw new ValidationError(
-           "Database provider must be an object."
-    );
-    }
-    
-    for(const [method, signature] of Object.entries(DATABASE_PROVIDER_CONTRACT)){
-
-    if(typeof databaseProvider[method] !== "function"){
-
-        throw new ValidationError(
-            `Database provider must implement ${signature}.`
+            "Database provider must be an object or function."
         );
-      }
     }
 
-    return databaseProvider;
+    for(const [method, signature] of Object.entries(
+        DATABASE_PROVIDER_CONTRACT
+    )){
+        if(typeof provider[method] !== "function") {
+            throw new ValidationError(
+                `Database provider must implement ${signature}.`
+            );
+        }
+    }
+
+    return provider;
 }

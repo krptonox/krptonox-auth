@@ -1,33 +1,32 @@
-import ValidationError from "../errors/ValidationError.js";
+import ValidationError from "../../errors/ValidationError.js";
 
-const EMAIL_PROVIDER_CONTRACT = Object.freeze({
-    sendEmail: "sendEmail(message)",
-    
-});
+import{
+    EMAIL_PROVIDER_CONTRACT
+} from "../contracts/email.contract.js";
 
-export function validateEmailProvider(emailProvider){
+export function validateEmailProvider(provider){
 
-   if(
-    emailProvider === null ||
-    (
-        typeof emailProvider !== "object" &&
-        typeof emailProvider !== "function"
-    )
+    if(
+        provider === null ||
+        (
+            typeof provider !== "object" &&
+            typeof provider !== "function"
+        )
     ){
         throw new ValidationError(
-           "Email provider must be an object."
-    );
-    }
-    
-    for(const [method, signature] of Object.entries(EMAIL_PROVIDER_CONTRACT)){
-
-    if(typeof emailProvider[method] !== "function"){
-
-        throw new ValidationError(
-            `Email provider must implement ${signature}.`
+            "Email provider must be an object or function."
         );
-      }
     }
 
-    return emailProvider;
+    for(const [method, signature] of Object.entries(
+        EMAIL_PROVIDER_CONTRACT
+    )){
+        if(typeof provider[method] !== "function") {
+            throw new ValidationError(
+                `Email provider must implement ${signature}.`
+            );
+        }
+    }
+
+    return provider;
 }

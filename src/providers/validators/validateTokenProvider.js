@@ -1,34 +1,32 @@
-import ValidationError from "../errors/ValidationError.js";
+import ValidationError from "../../errors/ValidationError.js";
 
-const TOKEN_PROVIDER_CONTRACT = Object.freeze({
-    sign: "sign(payload, options)",
-    verify: "verify(token, options)",
-    decode: "decode(token)"
-});
+import {
+    TOKEN_PROVIDER_CONTRACT
+} from "../contracts/token.contract.js";
 
-export function validateTokenProvider(tokenProvider) {
+export function validateTokenProvider(provider) {
 
-   if(
-    tokenProvider === null ||
-    (
-        typeof tokenProvider !== "object" &&
-        typeof tokenProvider !== "function"
-    )
-    ){
+    if (
+        provider === null ||
+        (
+            typeof provider !== "object" &&
+            typeof provider !== "function"
+        )
+    ) {
         throw new ValidationError(
-           "Token provider must be an object."
-    );
-}
-    
-    for(const [method, signature] of Object.entries(TOKEN_PROVIDER_CONTRACT)){
-
-    if(typeof tokenProvider[method] !== "function"){
-
-        throw new ValidationError(
-            `Token provider must implement ${signature}.`
+            "Token provider must be an object or function."
         );
-      }
     }
 
-    return tokenProvider;
+    for (const [method, signature] of Object.entries(
+        TOKEN_PROVIDER_CONTRACT
+    )) {
+        if (typeof provider[method] !== "function") {
+            throw new ValidationError(
+                `Token provider must implement ${signature}.`
+            );
+        }
+    }
+
+    return provider;
 }

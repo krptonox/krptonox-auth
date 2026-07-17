@@ -2,7 +2,7 @@ import mergeTokenDefaults from "./mergeTokenDefaults.js";
 import mergePolicyDefaults from "./mergePolicyDefaults.js";
 import mergeEmailDefaults from "./mergeEmailDefaults.js";
 
-import ConfigurationError from '../../errors/ConfigurationError.js';
+import ConfigurationError from "../../errors/ConfigurationError.js";
 
 export default function mergeDefaults(config) {
     if (!config) {
@@ -11,7 +11,9 @@ export default function mergeDefaults(config) {
         );
     }
 
-    let resolvedConfig = structuredClone(config);
+    let resolvedConfig = {
+        ...config
+    };
 
     resolvedConfig = mergeTokenDefaults(resolvedConfig);
     resolvedConfig = mergePolicyDefaults(resolvedConfig);

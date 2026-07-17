@@ -1,59 +1,18 @@
-createAuth({
+import { resolveConfig } from "./config/resolveConfig.js";
+import { initializeProviders } from "./providers/initializeProviders.js";
 
-    database: {
-        provider: mongoose,
-        userModel: User
-    },
+export function createAuth(config) {
+    // 1. Validate, merge defaults, and freeze configuration
+    const resolvedConfig = resolveConfig(config);
 
-    password: {
-        provider: ironpass
-    },
+    // 2. Validate and register runtime providers
+    const providerRegistry = initializeProviders(resolvedConfig);
 
-    token: {
-        provider: jsonwebtoken,
-        accessSecret: process.env.ACCESS_SECRET,
-        refreshSecret: process.env.REFRESH_SECRET
-    },
+    // 3. Later:
+    // Initialize authentication core/services here
 
-    policy: {
-        password: {
-            minLength: 8,
-            maxLength: 128,
-            requireUppercase: true,
-            requireLowercase: true,
-            requireNumber: true,
-            requireSpecial: true
-        }
-    },
-
-   email: {
-
-    provider: nodemailer,
-
-    options: {
-
-        host,
-        port,
-        secure,
-
-        auth: {
-            user,
-            pass
-        }
-
-    },
-
-    from: {
-
-        name: "My Application",
-
-        email: "noreply@company.com"
-
-    }
-
-  }
-
-});
-
-
-export default createAuth;
+    return {
+        config: resolvedConfig,
+        providers: providerRegistry,
+    };
+}

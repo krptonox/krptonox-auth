@@ -1,6 +1,6 @@
-import { validateConfig } from "../validators/validateConfig.js";
-import { mergeDefaults } from "../config/mergeDefault/index.js";
-import { freezeConfig } from "../config/freezeConfig.js";
+import { validateConfig } from "../validators/Validate_Config/validateConfig.js";
+import mergeDefaults from "./mergeDefault/index.js";
+import { freezeConfig } from "./freezeConfig.js";
 
 export function resolveConfig(config) {
     validateConfig(config);

@@ -1,14 +1,15 @@
-import ConfigurationError from '../../errors/ConfigurationError.js';
+import ConfigurationError from "../../errors/ConfigurationError.js";
 
-import { validateDatabaseConfig } from '../validateDatabaseConfig.js';
+import { validateDatabaseConfig } from "./validateDatabaseConfig.js";
 
-import { validatePasswordConfig } from '../validatePasswordConfig.js';
+import { validatePasswordConfig } from "./validatePasswordConfig.js";
 
-import { validateTokenConfig } from '../validateTokenConfig.js';
+import { validateTokenConfig } from "./validateTokenConfig.js";
 
-import { validatePolicyConfig } from '../validatePolicyConfig.js';
+import { validatePolicyConfig } from "./validatePolicyConfig.js";
 
-import { validateEmailConfig } from "../validateEmailConfig.js";
+import { validateEmailConfig } from "./validateEmailConfig.js";
+
 
 export function validateConfig(config) {
     if(!config){

@@ -1,4 +1,4 @@
-import ConfigurationError from "../errors/ConfigurationError.js";
+import ConfigurationError from "../../errors/ConfigurationError.js";
 
 export function validatePolicyConfig(policyConfig) {
     if(!policyConfig){
