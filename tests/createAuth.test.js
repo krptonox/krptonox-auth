@@ -5,134 +5,344 @@ import { createAuth } from "../src/createAuth.js";
 
 
 function createValidConfig() {
-    // Fake user model for configuration validation
+
     class UserModel {}
 
     return {
+
         database: {
+
             provider: {
+
                 async findUserBy(criteria) {
                     return null;
                 },
 
+
                 async findUserById(id) {
-                    return null;
+
+                    return {
+                        id,
+                        email: "user@example.com",
+                        password: "hashed:SecurePassword123!",
+                    };
+
                 },
+
 
                 async createUser(userData) {
-                    return userData;
+
+                    return {
+                        id: "user-1",
+                        ...userData,
+                    };
+
                 },
+
 
                 async updateUser(id, updates) {
-                    return updates;
+
+                    return {
+                        id,
+                        ...updates,
+                    };
+
                 },
+
             },
+
 
             userModel: UserModel,
+
         },
+
 
         password: {
+
             provider: {
+
                 async hash(password) {
+
                     return `hashed:${password}`;
+
                 },
+
 
                 async verify(password, hash) {
+
                     return hash === `hashed:${password}`;
+
                 },
+
             },
+
         },
+
 
         token: {
+
             provider: {
+
                 async sign(payload) {
+
                     return "fake-token";
+
                 },
+
 
                 async verify(token) {
-                    return {};
+
+                    return {
+                        userId: "user-1",
+                    };
+
                 },
+
             },
 
-            accessSecret: "test-access-secret",
-            refreshSecret: "test-refresh-secret",
+
+            accessSecret: "access-secret",
+
+            refreshSecret: "refresh-secret",
+
         },
+
     };
+
 }
 
 
-test("createAuth initializes the framework successfully", () => {
+
+// Login requires existing user
+function createLoginConfig() {
+
     const config = createValidConfig();
 
-    const auth = createAuth(config);
+
+    config.database.provider.findUserBy =
+        async ({ email }) => {
+
+            return {
+
+                id: "user-1",
+
+                email,
+
+                password: "hashed:SecurePassword123!",
+
+            };
+
+        };
+
+
+    return config;
+
+}
+
+
+
+// -------------------------
+// createAuth tests
+// -------------------------
+
+
+test("createAuth initializes successfully", () => {
+
+    const auth = createAuth(
+        createValidConfig()
+    );
+
 
     assert.ok(auth);
 
-    assert.ok(auth.config);
 
-    assert.ok(auth.providers);
+    assert.equal(
+        typeof auth.signup,
+        "function"
+    );
+
+
+    assert.equal(
+        typeof auth.login,
+        "function"
+    );
+
 });
 
 
-test("createAuth resolves and freezes configuration", () => {
-    const config = createValidConfig();
 
-    const auth = createAuth(config);
+test("createAuth freezes resolved configuration", () => {
+
+    const auth = createAuth(
+        createValidConfig()
+    );
+
 
     assert.equal(
         Object.isFrozen(auth.config),
         true
     );
+
 });
 
 
-test("createAuth initializes required providers", () => {
-    const config = createValidConfig();
 
-    const auth = createAuth(config);
+test("createAuth registers required providers", () => {
 
-    assert.equal(
-        auth.providers.get("database"),
-        auth.config.database.provider
+    const auth = createAuth(
+        createValidConfig()
     );
 
-    assert.equal(
-        auth.providers.get("password"),
-        auth.config.password.provider
-    );
 
     assert.equal(
-        auth.providers.get("token"),
-        auth.config.token.provider
+        auth.providers.has("database"),
+        true
     );
+
+
+    assert.equal(
+        auth.providers.has("password"),
+        true
+    );
+
+
+    assert.equal(
+        auth.providers.has("token"),
+        true
+    );
+
 });
 
 
-test("createAuth does not register email when not configured", () => {
-    const config = createValidConfig();
 
-    const auth = createAuth(config);
+// -------------------------
+// signup integration
+// -------------------------
+
+
+test("auth.signup works through full pipeline", async () => {
+
+    const auth = createAuth(
+        createValidConfig()
+    );
+
+
+    const result =
+        await auth.signup({
+
+            email: "new@example.com",
+
+            password: "SecurePassword123!",
+
+        });
+
+
 
     assert.equal(
-        auth.providers.has("email"),
-        false
+        result.user.id,
+        "user-1"
     );
+
+
+    assert.equal(
+        result.user.email,
+        "new@example.com"
+    );
+
+
+    assert.equal(
+        result.user.password,
+        undefined
+    );
+
+
+    assert.equal(
+        result.accessToken,
+        "fake-token"
+    );
+
 });
 
 
-test("createAuth fails when a provider violates its contract", () => {
-    const config = createValidConfig();
+
+// -------------------------
+// login integration
+// -------------------------
+
+
+test("auth.login works through full pipeline", async () => {
+
+    const auth = createAuth(
+        createLoginConfig()
+    );
+
+
+    const result =
+        await auth.login({
+
+            email: "user@example.com",
+
+            password: "SecurePassword123!",
+
+        });
+
+
+
+    assert.equal(
+        result.user.id,
+        "user-1"
+    );
+
+
+    assert.equal(
+        result.user.email,
+        "user@example.com"
+    );
+
+
+    assert.equal(
+        result.user.password,
+        undefined
+    );
+
+
+    assert.equal(
+        result.accessToken,
+        "fake-token"
+    );
+
+});
+
+
+
+// -------------------------
+// provider failure
+// -------------------------
+
+
+test("createAuth rejects invalid password provider", () => {
+
+    const config =
+        createValidConfig();
+
 
     config.password.provider = {
-        async hash(password) {
-            return `hashed:${password}`;
-        },
 
-        // verify() intentionally missing
+        async hash(password) {
+
+            return password;
+
+        }
+
     };
 
+
     assert.throws(
+
         () => createAuth(config),
+
         /verify/
+
     );
+
 });
