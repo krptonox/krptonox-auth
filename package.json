@@ -1,7 +1,8 @@
 {
   "name": "@krptonox/auth",
   "version": "0.1.0",
-  "description": "Authentication framework for Express using IronPass.",
+  "description": "An extensible provider-based authentication framework for Node.js.",
+
   "type": "module",
 
   "main": "./src/index.js",
@@ -16,13 +17,19 @@
 
   "scripts": {
     "test": "node --test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepublishOnly": "npm test"
   },
 
   "keywords": [
     "authentication",
-    "express",
+    "auth",
+    "nodejs",
+    "security",
     "jwt",
+    "password",
+    "provider",
+    "authentication-framework",
     "ironpass"
   ],
 
@@ -49,7 +56,6 @@
   },
 
   "dependencies": {
-    "express": "^5.2.1",
     "ironpass": "^0.2.0",
     "jsonwebtoken": "^9.0.3"
   }
