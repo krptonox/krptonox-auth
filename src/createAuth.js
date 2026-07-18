@@ -1,12 +1,15 @@
 import { resolveConfig } from "./config/resolveConfig.js";
 import { initializeProviders } from "./providers/initializeProviders.js";
 
+import { SessionService } from "./core/services/SessionService.js";
+
 import { PasswordService } from "./core/services/PasswordService.js";
 import { UserService } from "./core/services/UserService.js";
 import { TokenService } from "./core/services/TokenService.js";
 
 import { createSignup } from "./core/useCases/signup.js";
 import { createLogin } from "./core/useCases/login.js";
+
 
 
 export function createAuth(config) {
@@ -33,12 +36,17 @@ export function createAuth(config) {
             providerRegistry.get("token")
         );
 
+    const sessionService = new SessionService(
+    providerRegistry.get("database")
+     );
+
     // 4. Collect dependencies
     const services = {
-        userService,
-        passwordService,
-        tokenService,
-    };
+    userService,
+    passwordService,
+    tokenService,
+    sessionService,
+};
 
     // 5. Initialize use cases
     const signup = createSignup(services);
@@ -53,9 +61,9 @@ export function createAuth(config) {
     providers: providerRegistry,
 };
 
-console.log(auth);
-console.log(Object.keys(auth));
-console.log(auth.providers);
+// console.log(auth);
+// console.log(Object.keys(auth));
+// console.log(auth.providers);
 
 return auth;
 }
