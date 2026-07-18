@@ -45,11 +45,17 @@ export function createAuth(config) {
     const login = createLogin(services);
 
     // 6. Public API
-    return {
-        signup,
-        login,
+    const auth = {
+    signup,
+    login,
 
-        config: resolvedConfig,
-        providers: providerRegistry,
-    };
+    config: resolvedConfig,
+    providers: providerRegistry,
+};
+
+console.log(auth);
+console.log(Object.keys(auth));
+console.log(auth.providers);
+
+return auth;
 }

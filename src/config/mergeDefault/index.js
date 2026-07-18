@@ -1,5 +1,5 @@
-import mergeTokenDefaults from "./mergeTokenDefaults.js";
-import mergePolicyDefaults from "./mergePolicyDefaults.js";
+import  mergeTokenDefaults  from "./mergeTokenDefaults.js";
+import  mergePolicyDefaults  from "./mergePolicyDefaults.js";
 import mergeEmailDefaults from "./mergeEmailDefaults.js";
 
 import ConfigurationError from "../../errors/ConfigurationError.js";

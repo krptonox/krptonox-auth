@@ -193,18 +193,15 @@ test("createAuth registers required providers", () => {
         createValidConfig()
     );
 
-
     assert.equal(
         auth.providers.has("database"),
         true
     );
 
-
     assert.equal(
         auth.providers.has("password"),
         true
     );
-
 
     assert.equal(
         auth.providers.has("token"),
