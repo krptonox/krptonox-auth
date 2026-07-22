@@ -7,7 +7,8 @@ import { createUseCases } from "./core/createUseCases.js";
 export function createAuth(config) {
 
     // 1. Resolve configuration
-    const resolvedConfig = resolveConfig(config);
+    const resolvedConfig =
+        resolveConfig(config);
 
     // 2. Initialize providers
     const providerRegistry =
@@ -15,22 +16,22 @@ export function createAuth(config) {
 
     // 3. Create services
     const services =
-        createServices(providerRegistry);
+        createServices(
+            providerRegistry,
+            resolvedConfig
+        );
 
     // 4. Create use cases
-    const useCases =
-        createUseCases(services);
-
-    // 5. Public API
     const {
-    signup,
-    login,
+        signup,
+        login,
     } = createUseCases(services);
 
-return {
-    signup,
-    login,
-    config: resolvedConfig,
-    providers: providerRegistry,
-};
+    // 5. Public API
+    return {
+        signup,
+        login,
+        config: resolvedConfig,
+        providers: providerRegistry,
+    };
 }
