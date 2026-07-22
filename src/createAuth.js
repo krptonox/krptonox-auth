@@ -1,18 +1,11 @@
 import { resolveConfig } from "./config/resolveConfig.js";
 import { initializeProviders } from "./providers/initializeProviders.js";
 
-import { SessionService } from "./core/services/SessionService.js";
-
-import { PasswordService } from "./core/services/PasswordService.js";
-import { UserService } from "./core/services/UserService.js";
-import { TokenService } from "./core/services/TokenService.js";
-
-import { createSignup } from "./core/useCases/signup.js";
-import { createLogin } from "./core/useCases/login.js";
-
-
+import { createServices } from "./core/createServices.js";
+import { createUseCases } from "./core/createUseCases.js";
 
 export function createAuth(config) {
+
     // 1. Resolve configuration
     const resolvedConfig = resolveConfig(config);
 
@@ -20,50 +13,24 @@ export function createAuth(config) {
     const providerRegistry =
         initializeProviders(resolvedConfig);
 
-    // 3. Initialize services
-    const passwordService =
-        new PasswordService(
-            providerRegistry.get("password")
-        );
+    // 3. Create services
+    const services =
+        createServices(providerRegistry);
 
-    const userService =
-        new UserService(
-            providerRegistry.get("database")
-        );
+    // 4. Create use cases
+    const useCases =
+        createUseCases(services);
 
-    const tokenService =
-        new TokenService(
-            providerRegistry.get("token")
-        );
-
-    const sessionService = new SessionService(
-    providerRegistry.get("database")
-     );
-
-    // 4. Collect dependencies
-    const services = {
-    userService,
-    passwordService,
-    tokenService,
-    sessionService,
-};
-
-    // 5. Initialize use cases
-    const signup = createSignup(services);
-    const login = createLogin(services);
-
-    // 6. Public API
-    const auth = {
+    // 5. Public API
+    const {
     signup,
     login,
+    } = createUseCases(services);
 
+return {
+    signup,
+    login,
     config: resolvedConfig,
     providers: providerRegistry,
 };
-
-// console.log(auth);
-// console.log(Object.keys(auth));
-// console.log(auth.providers);
-
-return auth;
 }
