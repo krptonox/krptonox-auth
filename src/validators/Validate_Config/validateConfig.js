@@ -10,6 +10,8 @@ import { validatePolicyConfig } from "./validatePolicyConfig.js";
 
 import { validateEmailConfig } from "./validateEmailConfig.js";
 
+import { validateSessionConfig } from "./validateSessionConfig.js";
+
 
 export function validateConfig(config) {
     if(!config){
@@ -29,6 +31,8 @@ export function validateConfig(config) {
     validatePasswordConfig(password);
 
     validateTokenConfig(token);
+
+    validateSessionConfig(config.session);
 
     if(policy) {
     validatePolicyConfig(policy);

@@ -5,10 +5,19 @@ import { validateDatabaseProvider } from "../../src/providers/validators/validat
 
 test("accepts a valid database provider", () => {
     const provider = {
+        // User methods
         async findUserBy(criteria) {},
         async findUserById(id) {},
         async createUser(userData) {},
         async updateUser(id, updates) {},
+
+        // Session methods
+        async createSession(sessionData) {},
+        async findSession(id) {},
+        async findSessionsByUser(userId) {},
+        async updateSession(id, updates) {},
+        async deleteSession(id) {},
+        async deleteAllSessions(userId) {},
     };
 
     assert.equal(
@@ -19,8 +28,19 @@ test("accepts a valid database provider", () => {
 
 test("rejects incomplete database provider", () => {
     const provider = {
+        // User methods
         async findUserBy(criteria) {},
+        async findUserById(id) {},
         async createUser(userData) {},
+        async updateUser(id, updates) {},
+
+        // Session methods
+        async createSession(sessionData) {},
+        // findSession intentionally missing
+        async findSessionsByUser(userId) {},
+        async updateSession(id, updates) {},
+        async deleteSession(id) {},
+        async deleteAllSessions(userId) {},
     };
 
     assert.throws(

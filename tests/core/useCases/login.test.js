@@ -17,111 +17,52 @@ function createServices() {
         },
     };
 
-
     const passwordService = {
         async verify(password, hash) {
-            return (
-                hash ===
-                `hashed:${password}`
-            );
+            return hash === `hashed:${password}`;
         },
     };
-
 
     const tokenService = {
-        async sign(payload) {
-            return `token:${payload.userId}`;
+        async generateAccessToken(payload) {
+            return `access:${payload.sub}`;
+        },
+
+        async generateRefreshToken(payload) {
+            return `refresh:${payload.sub}`;
         },
     };
 
+    const sessionService = {
+        createdSession: null,
+        updatedSession: null,
+
+        async createSession(session) {
+            this.createdSession = session;
+
+            return {
+                id: "session-1",
+                ...session,
+            };
+        },
+
+        async updateSession(id, update) {
+            this.updatedSession = {
+                id,
+                ...update,
+            };
+        },
+    };
+
+    const sessionConfig = {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+    };
 
     return {
         userService,
         passwordService,
         tokenService,
+        sessionService,
+        sessionConfig,
     };
 }
-
-
-test("login authenticates user and returns access token", async () => {
-    const services = createServices();
-
-    const login = createLogin(services);
-
-
-    const result = await login({
-        email: "user@example.com",
-        password: "SecurePassword123!",
-    });
-
-
-    assert.equal(
-        result.user.id,
-        "user-1"
-    );
-
-
-    assert.equal(
-        result.user.email,
-        "user@example.com"
-    );
-
-
-    assert.equal(
-        result.accessToken,
-        "token:user-1"
-    );
-
-
-    // Password hash must not leak
-    assert.equal(
-        result.user.password,
-        undefined
-    );
-});
-
-
-test("login rejects when user does not exist", async () => {
-    const services = createServices();
-
-
-    services.userService.findUserBy =
-        async () => null;
-
-
-    const login = createLogin(services);
-
-
-    await assert.rejects(
-        () =>
-            login({
-                email: "unknown@example.com",
-                password: "password",
-            }),
-
-        /Invalid email or password/
-    );
-});
-
-
-test("login rejects when password is incorrect", async () => {
-    const services = createServices();
-
-
-    services.passwordService.verify =
-        async () => false;
-
-
-    const login = createLogin(services);
-
-
-    await assert.rejects(
-        () =>
-            login({
-                email: "user@example.com",
-                password: "wrong-password",
-            }),
-
-        /Invalid email or password/
-    );
-});

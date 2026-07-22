@@ -38,4 +38,10 @@ export class SessionService {
         return this.provider.deleteAllSessions(userId);
     }
 
+    async findSessionsByUser(userId) {
+    requireId(userId, "User id");
+
+    return this.provider.findSessionsByUser(userId);
+    }
+
 }
