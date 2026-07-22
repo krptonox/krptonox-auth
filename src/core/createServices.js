@@ -3,7 +3,10 @@ import { UserService } from "./services/UserService.js";
 import { TokenService } from "./services/TokenService.js";
 import { SessionService } from "./services/SessionService.js";
 
-export function createServices(providerRegistry) {
+export function createServices(
+    providerRegistry,
+    resolvedConfig
+) {
     return {
         passwordService: new PasswordService(
             providerRegistry.get("password")
@@ -20,5 +23,7 @@ export function createServices(providerRegistry) {
         sessionService: new SessionService(
             providerRegistry.get("database")
         ),
+
+        sessionConfig: resolvedConfig.session,
     };
 }

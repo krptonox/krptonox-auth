@@ -14,42 +14,70 @@ function createValidConfig() {
 
             provider: {
 
-                async findUserBy(criteria) {
-                    return null;
-                },
+    // ---------------------
+    // User operations
+    // ---------------------
 
+    async findUserBy(criteria) {
+        return null;
+    },
 
-                async findUserById(id) {
+    async findUserById(id) {
+        return {
+            id,
+            email: "user@example.com",
+            password: "hashed:SecurePassword123!",
+        };
+    },
 
-                    return {
-                        id,
-                        email: "user@example.com",
-                        password: "hashed:SecurePassword123!",
-                    };
+    async createUser(userData) {
+        return {
+            id: "user-1",
+            ...userData,
+        };
+    },
 
-                },
+    async updateUser(id, updates) {
+        return {
+            id,
+            ...updates,
+        };
+    },
 
+    // ---------------------
+    // Session operations
+    // ---------------------
 
-                async createUser(userData) {
+    async createSession(sessionData) {
+        return {
+            id: "session-1",
+            ...sessionData,
+        };
+    },
 
-                    return {
-                        id: "user-1",
-                        ...userData,
-                    };
+    async findSession(criteria) {
+        return null;
+    },
 
-                },
+    async findSessionsByUser(userId) {
+        return [];
+    },
 
+    async updateSession(id, updates) {
+        return {
+            id,
+            ...updates,
+        };
+    },
 
-                async updateUser(id, updates) {
+    async deleteSession(id) {
+        return true;
+    },
 
-                    return {
-                        id,
-                        ...updates,
-                    };
-
-                },
-
-            },
+    async deleteAllSessions(userId) {
+        return true;
+    },
+},
 
 
             userModel: UserModel,

@@ -13,7 +13,7 @@ test("accepts a valid database provider", () => {
 
         // Session methods
         async createSession(sessionData) {},
-        async findSession(id) {},
+        async findSession(criteria) {},
         async findSessionsByUser(userId) {},
         async updateSession(id, updates) {},
         async deleteSession(id) {},

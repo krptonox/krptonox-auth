@@ -7,13 +7,20 @@ import { initializeProviders } from "../../src/providers/initializeProviders.js"
 function createValidConfig() {
     return {
         database: {
-            provider: {
-                async findUserBy(criteria) {},
-                async findUserById(id) {},
-                async createUser(userData) {},
-                async updateUser(id, updates) {},
-            },
-        },
+    provider: {
+        async findUserBy(criteria) {},
+        async findUserById(id) {},
+        async createUser(userData) {},
+        async updateUser(id, updates) {},
+
+        async createSession(sessionData) {},
+        async findSession(criteria) {},
+        async findSessionsByUser(userId) {},
+        async updateSession(id, updates) {},
+        async deleteSession(id) {},
+        async deleteAllSessions(userId) {},
+    },
+},
 
         password: {
             provider: {
