@@ -23,15 +23,16 @@ export function createAuth(config) {
 
     // 4. Create use cases
     const {
-        signup,
-        login,
-    } = createUseCases(services);
+    signup,
+    login,
+    refresh,
+} = createUseCases(services);
 
-    // 5. Public API
-    return {
-        signup,
-        login,
-        config: resolvedConfig,
-        providers: providerRegistry,
-    };
+return {
+    signup,
+    login,
+    refresh,
+    config: resolvedConfig,
+    providers: providerRegistry,
+};
 }
